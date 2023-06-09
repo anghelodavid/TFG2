@@ -1,0 +1,44 @@
+body {
+    background-color: #fff; /* Color de fondo blanco (#fff) */
+    margin: 0; /* Eliminar margen */
+    padding: 0; /* Eliminar relleno */
+  }
+  
+  header {
+    background-color: #00bcd4; /* Color de fondo azul cian (#00bcd4) */
+    padding: 10px;
+    margin: 0; /* Eliminar margen */
+  }
+  
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 3rem; /* Altura de 3 filas */
+    border: 1px solid #00bcd4; /* Color del borde igual al fondo */
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav li {
+    margin-right: 10px;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #fff; /* Color de texto blanco (#fff) */
+  }
+  
+  section {
+    margin-top: 20px;
+    background-color: #fff; /* Color de fondo blanco (#fff) */
+    padding: 20px;
+  }
+  
