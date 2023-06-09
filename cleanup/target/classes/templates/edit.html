@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Factura de Limpieza</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .invoice {
+      width: 100vw;
+      height: 100vh;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      color: #333;
+      margin: 0;
+    }
+
+    .details {
+      margin-bottom: 30px;
+    }
+
+    .details p {
+      margin: 0;
+    }
+
+    .details .company-info {
+      margin-top: 10px;
+    }
+
+    .items {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .items th,
+    .items td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    .items2 th {
+      background-color: #98e2e2;
+    }
+
+    .items th {
+      background-color: #98e2e2;
+    }
+
+    .items td.quantity,
+    .items td.price {
+      text-align: right;
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    .total-box {
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+    }
+
+    .total-box span {
+      font-weight: bold;
+    }
+
+    .right-align {
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="invoice">
+    <div class="header">
+      <h1>Factura de Limpieza</h1>
+    </div>
+    <div class="details">
+      <p><strong>Empresa de Limpieza Profesional</strong></p>
+      <p>Dirección: Calle Principal 123, Ciudad</p>
+      <p>Teléfono: 123-456789</p>
+    </div>
+    <form action="#" th:action="@{/save}" th:object="${factura}" method="post">
+      <table>
+        <tr>
+          <td></td>
+          <td></td>
+          <td class="total-box right-align">
+            <span>Número:</span>
+            <input type="text" th:field="*{numero_factura}" />
+          </td>
+          <td class="total-box right-align">
+            <span>Fecha:</span>
+            <input type="text" th:field="*{fecha}" />
+          </td>
+          <td class="total-box right-align">
+            <span>Estado:</span>
+            <input type="text" th:field="*{estado}" />
+          </td>
+          <td class="total-box right-align">
+            <span>ID FACTURA:</span>
+            <input type="text" th:field="*{id}" />
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td class="total-box right-align">
+            <span>Cliente:</span>
+            <input type="text" th:field="*{cliente}" />
+          </td>
+          <td class="total-box right-align">
+            <span>DNI:</span>
+            <input type="text" th:field="*{dni}" />
+          </td>
+          <td class="total-box right-align">
+            <span>Domicilio:</span>
+            <input type="text" th:field="*{domicilio}" />
+          </td>
+          <td class="total-box right-align">
+            <span>Población:</span>
+            <input type="text" th:field="*{poblacion}" />
+          </td>
+        </tr>
+      </table>
+      <table class="items">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Trabajos realizados</th>
+            <th>Importe</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+             <td class="quantity" style="text-align: center; vertical-align: middle;">
+              <input type="text" th:field="*{descripcion_trabajo}" />
+            </td>
+             <td class="quantity" style="text-align: center; vertical-align: middle;">
+              <input type="text" th:field="*{precio_trabajo}" />
+            </td>
+          </tr>
+          <!-- Agregar una fila adicional oculta que se clonará -->
+          <tr id="fila-clonada" style="display: none;">
+            <td></td>
+            <td class="quantity">
+              <input type="text" />
+            </td>
+            <td class="price">
+              <input type="text" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="items">
+        <tbody>
+          <tr>
+            <td class="quantity">BASE IMPONIBLE</td>
+            <td class="price"></td>
+          </tr>
+          <tr>
+            <td class="quantity">I.V.A.......21%</td>
+            <td class="price"></td>
+          </tr>
+          <tr>
+            <td class="quantity">TOTAL A PAGAR</td>
+            <td class="price"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="footer">
+        <button type="submit">Guardar</button>
+        <!-- Agregar el nuevo botón para añadir filas -->
+        <button type="button" id="agregar-fila">Añadir trabajo</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Obtener el botón "Añadir fila"
+      var agregarFilaBtn = document.getElementById("agregar-fila");
+
+      // Agregar un evento click al botón
+      agregarFilaBtn.addEventListener("click", function() {
+        // Obtener la tabla de trabajos realizados
+        var tablaItems = document.querySelector(".items tbody");
+
+        // Clonar la fila oculta
+        var filaClonada = document.getElementById("fila-clonada").cloneNode(true);
+
+        // Mostrar la fila clonada y agregarla a la tabla
+        filaClonada.style.display = "table-row";
+        tablaItems.appendChild(filaClonada);
+      });
+    });
+  </script>
+</body>
+</html>

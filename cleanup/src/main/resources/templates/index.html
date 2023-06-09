@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Facturas</title>
+    <style>
+        header {
+            background-color: black;
+            height: 50px;
+            padding: 10px;
+            position: relative;
+        }
+
+        h2 {
+            color: white;
+            margin: 0;
+        }
+
+        form {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 10px;
+        }
+
+        input[type="text"] {
+            background-color: black;
+            color: white;
+            border: none;
+            border-bottom: 1px solid white;
+            padding: 5px;
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+
+        body {
+            background-color: #FFC0CB;
+            font-family: Arial, sans-serif;
+        }
+
+        div {
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid black;
+        }
+
+        th {
+            background-color: pink;
+            color: black;
+        }
+
+        td {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>ADMINISTRADOR DE FACTURAS</h2>
+        <form id="searchForm">
+            <input type="text" placeholder="Buscar..." id="searchInput">
+        </form>
+    </header>
+    <body style="background-color: #FFC0CB;">
+        <div align="center">
+            <a href="new" style="color: black;">CREAR UNA NUEVA FACTURA</a>
+            <br /><br />
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NUMERO-FACTURA</th>
+                        <th>FECHA</th>
+                        <th>CLIENTE</th>
+                        <th>DOMICILIO</th>
+                        <th>POBLACION</th>
+                        <th>DNI</th>
+                        <th>ESTADO</th>
+                        <th>DESCRIPCION TRABAJO</th>
+                        <th>PRECIO TRABAJO</th>
+                        <th colspan="3">OPCIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="factura : ${listFactura}">
+                        <td th:text="${factura.id}"> ID</td>
+                        <td th:text="${factura.numero_factura}">NUMERO FACTURA</td>
+                        <td th:text="${factura.fecha}"> FECHA</td>
+                        <td th:text="${factura.cliente}"> CLIENTE</td>
+                        <td th:text="${factura.domicilio}"> DOMICILIO</td>
+                        <td th:text="${factura.poblacion}">POBLACION</td>
+                        <td th:text="${factura.dni}">DNI</td>
+                        <td th:text="${factura.estado}">ESTADO</td>
+                        <td th:text="${factura.descripcion_trabajo}">DESCRIPCION TRABAJO</td>
+                        <td th:text="${factura.precio_trabajo}">PRECIO TRABAJO</td>
+                        <td>
+                            <a th:href="@{'/show/' + ${factura.id}}" style="color: black;">Mostrar factura</a>
+                        </td>
+                        <td>
+                            <a th:href="@{'/edit/' + ${factura.id}}" style="color: black;">Editar</a>
+                        </td>
+                        <td>
+                            <a th:href="@{'/delete/' + ${factura.id}}" style="color: black;">Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+    <script>
+        // Obtener elementos del DOM
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const table = document.querySelector('table');
+
+        // Agregar evento al formulario de búsqueda
+        searchForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Evitar que se recargue la página
+
+            const searchText = searchInput.value.toLowerCase(); // Obtener texto de búsqueda en minúsculas
+
+            // Filtrar las filas de la tabla y ocultar las que no coincidan con el texto de búsqueda
+            Array.from(table.querySelectorAll('tbody tr')).forEach(function (row) {
+                const rowData = Array.from(row.querySelectorAll('td')).map(function (cell) {
+                    return cell.textContent.toLowerCase();
+                });
+
+                if (rowData.some(function (data) {
+                    return data.includes(searchText);
+                })) {
+                    row.style.display = ''; // Mostrar la fila si coincide con la búsqueda
+                } else {
+                    row.style.display = 'none'; // Ocultar la fila si no coincide con la búsqueda
+                }
+            });
+        });
+    </script>
+</body>
+</html>
