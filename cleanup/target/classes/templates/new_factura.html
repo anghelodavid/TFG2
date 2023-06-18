@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>Crea nueva factura</title>
+
+<style>
+	/* Estilos CSS para el cuerpo de la página */
+	body {
+		font-family: Arial, sans-serif;
+		background-color: #f2f2f2;
+		margin: 0;
+		padding: 0;
+	}
+
+	/* Estilos CSS para el encabezado */
+	h1 {
+		color: #333333;
+	}
+
+	/* Estilos CSS para el formulario */
+	form {
+		width: 400px;
+		margin: 0 auto;
+		background-color: #ffffff;
+		padding: 20px;
+		border-radius: 5px;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	}
+
+	/* Estilos CSS para la tabla */
+	table {
+		width: 100%;
+	}
+
+	/* Estilos CSS para las celdas de la tabla */
+	td {
+		padding: 10px;
+	}
+
+	/* Estilos CSS para los campos de texto */
+	input[type="text"] {
+		width: 100%;
+		padding: 5px;
+		border-radius: 3px;
+		border: 1px solid #cccccc;
+	}
+
+	/* Estilos CSS para el botón de submit */
+	button[type="submit"] {
+		padding: 10px 20px;
+		border-radius: 3px;
+		background-color: #4caf50;
+		border: none;
+		color: #ffffff;
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	/* Estilos CSS para el botón de agregar fila */
+	.add-row-button {
+		margin-top: 10px;
+	}
+</style>
+
+</head>
+<body>
+	<div align="center">
+		<h1>Crea nueva factura</h1>
+		<br />
+		<form action="#" th:action="@{/save}" th:object="${factura}"
+			method="post">
+
+			<!-- Tabla para organizar los campos del formulario -->
+			<table border="0" cellpadding="10">
+				<!-- Fila para el campo "Número de factura" -->
+				<tr>
+					<td>NUMERO FACTURA:</td>
+					<td><input type="text" th:field="*{numero_factura}" /></td>				
+				</tr>
+				<!-- Fila para el campo "Fecha" -->
+				<tr>
+					<td>FECHA:</td>
+					<td><input type="text" th:field="*{fecha}" /></td>
+				</tr>
+				<!-- Fila para el campo "Cliente" -->
+				<tr>
+					<td>CLIENTE:</td>
+					<td><input type="text" th:field="*{cliente}" /></td>
+				</tr>
+				<!-- Fila para el campo "Domicilio" -->
+				<tr>
+					<td>DOMICILIO:</td>
+					<td><input type="text" th:field="*{domicilio}" /></td>
+				</tr>
+				<!-- Fila para el campo "Población" -->
+				<tr>
+					<td>POBLACION:</td>
+					<td><input type="text" th:field="*{poblacion}" /></td>
+				</tr>
+				<!-- Fila para el campo "DNI" -->
+				<tr>
+					<td>DNI:</td>
+					<td><input type="text" th:field="*{dni}" /></td>
+				</tr>
+				<!-- Fila para el campo "Estado" -->
+				<tr>
+						<td>ESTADO:</td>
+						<td><input type="text" th:field="*{estado}" /></td>
+					</tr>
+				<!-- Fila para el encabezado de los trabajos realizados e importe -->
+				<tr>
+					<td colspan="2">
+						<h3>TRABAJOS REALIZADOS E IMPORTE</h3>
+					</td>
+				</tr>
+				<tbody id="items-table">
+					<!-- Fila inicial para el primer trabajo realizado e importe -->
+					<tr>
+						<td><input type="text" th:field="*{descripcion_trabajo}" /></td>
+						<td><input type="text" th:field="*{precio_trabajo}" /></td>
+					</tr>
+				</tbody>
+				<!-- Fila para el botón de agregar trabajo e importe -->
+				<tr>
+					<td colspan="2">
+						<button type="button" class="add-row-button" onclick="addRow()">Agregar trabajo e importe</button>
+					</td>
+				</tr>
+				<!-- Fila para el botón de guardar -->
+				<tr>
+					<td colspan="2"><button type="submit">Guardar</button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<!-- Script JavaScript para agregar filas adicionales a la tabla -->
+	<script>
+	function addRow() {
+		var table = document.getElementById("items-table");
+		// Insertar al final de la tabla
+		var newRow = table.insertRow(-1)
+		// Celda para la descripción del trabajo; 
+		var descriptionCell = newRow.insertCell(0); 
+		 // Celda para el precio del trabajo
+		var priceCell = newRow.insertCell(1);
+		// Campo de descripción del trabajo
+		descriptionCell.innerHTML = '<input type="text" th:field="*{descripcion_trabajo}" />'; 
+		// Campo del precio del trabajo
+		priceCell.innerHTML = '<input type="text" th:field="*{precio_trabajo}" />'; 
+	}
+    </script>
+</body>
+</html>

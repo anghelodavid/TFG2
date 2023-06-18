@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Factura de Limpieza</title>
+  <style>
+    /* Estilos CSS */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .invoice {
+      width: 100vw;
+      height: 100vh;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      color: #333;
+      margin: 0;
+    }
+
+    .details {
+      margin-bottom: 30px;
+    }
+
+    .details p {
+      margin: 0;
+    }
+
+    .details .company-info {
+      margin-top: 10px;
+    }
+
+    .items {
+      width: 100%;
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+
+    .items th,
+    .items td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    .items2 th {
+      background-color: #98e2e2;
+    }
+
+    .items th {
+      background-color: #98e2e2;
+    }
+
+    .items td.quantity,
+    .items td.price,
+    .items td.center-align {
+      text-align: right;
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    .total-box {
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+    }
+
+    .total-box span {
+      font-weight: bold;
+    }
+
+    .right-align {
+      text-align: right;
+    }
+
+    .center-align {
+      text-align: center;
+    }
+    
+    .items td.price {
+      width: 200px; 
+    }
+  </style>
+</head>
+<body>
+  <div class="invoice">
+    <div class="header">
+      <h1>Factura de Limpieza</h1>
+    </div>
+    <div class="details">
+      <p><strong>Empresa de Limpieza Profesional</strong></p>
+      <p>Dirección: Calle Principal 123, Ciudad</p>
+      <p>Teléfono: 123-456789</p>
+    </div>
+    <form action="#" th:action="@{/save}" th:object="${factura}" method="post">
+      <table>
+        <!-- Detalles de la factura -->
+        <tr>
+          <td></td>
+          <td class="total-box right-align">
+            <span>Número:</span>
+            <span th:text="*{numero_factura}"></span>
+          </td>
+          <td class="total-box right-align">
+            <span>Fecha:</span>
+            <span th:text="*{fecha}"></span>
+          </td>
+          <td class="total-box right-align">
+            <span>Estado:</span>
+            <span th:text="*{estado}"></span>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="total-box right-align">
+            <span>Cliente:</span>
+            <span th:text="*{cliente}"></span>
+          </td>
+          <td class="total-box right-align">
+            <span>DNI:</span>
+            <span th:text="*{dni}"></span>
+          </td>
+          <td class="total-box right-align">
+            <span>Domicilio:</span>
+            <span th:text="*{domicilio}"></span>
+          </td>
+          <td class="total-box right-align">
+            <span>Población:</span>
+            <span th:text="*{poblacion}"></span>
+          </td>
+        </tr>
+      </table>
+      <table class="items">
+        <!-- Detalles de los trabajos realizados -->
+        <thead>
+          <tr>
+            <th>Trabajos realizados</th>
+            <th>Importe</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="quantity" style="text-align: center; vertical-align: middle;">
+              <span th:text="*{descripcion_trabajo}"></span>
+            </td>
+            <td class="price center-align">
+              <span id="precio-trabajo" th:text="*{precio_trabajo}"></span> €
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="items">
+        <!-- Total a pagar -->
+        <tbody>
+          <tr>
+            <td class="quantity center-align">BASE IMPONIBLE</td>
+            <td id="base-imponible-amount" class="price center-align"></td>
+          </tr>
+          <tr>
+            <td class="quantity center-align">I.V.A.......21%</td>
+            <td id="iva-amount" class="price center-align"></td>
+          </tr>
+          <tr>
+            <td class="quantity center-align">TOTAL A PAGAR</td>
+            <td id="total-pagar-amount" class="price center-align"></td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+  <script>
+    // Función para calcular el IVA y actualizar los montos
+    function calcularIVA() {
+      var precioTrabajo = parseFloat(document.getElementById("precio-trabajo").textContent);
+      var iva = precioTrabajo * 0.21;
+      document.getElementById("iva-amount").textContent = iva.toFixed(2) + ' €';
+      var totalPagar = precioTrabajo + iva;
+      document.getElementById("total-pagar-amount").textContent = totalPagar.toFixed(2) + ' €';
+
+      // Replicar el valor de Importe en Base Imponible
+      document.getElementById("base-imponible-amount").textContent = precioTrabajo.toFixed(2) + ' €';
+    }
+
+    // Llamar a la función para calcular el IVA al cargar la página
+    calcularIVA();
+  </script>
+</body>
+</html>

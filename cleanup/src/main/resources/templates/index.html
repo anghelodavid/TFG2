@@ -1,0 +1,207 @@
+<!-- Declaración del tipo de documento -->
+<!DOCTYPE html>
+
+<!-- Inicio del documento HTML -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Cabecera del documento -->
+<head>
+    <!-- Configuración de la codificación de caracteres -->
+    <meta charset="utf-8" />
+
+    <!-- Título de la página -->
+    <title>Facturas</title>
+
+    <!-- Estilos CSS -->
+    <style>
+        /* Estilos para el encabezado */
+        header {
+            background-color: rgb(240, 248, 8);
+            height: 50px;
+            padding: 10px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Estilos para el título h2 */
+        h2 {
+            color: rgb(0, 84, 240);
+            margin: 0;
+        }
+
+        /* Estilos para el formulario de búsqueda */
+        form {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 10px;
+        }
+
+        /* Estilos para el campo de texto de búsqueda */
+        input[type="text"] {
+            background-color: rgb(255, 255, 255), 255, 0;
+        }
+
+        /* Estilos para los enlaces */
+        a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Estilos generales del cuerpo del documento */
+        body {
+            background-color: #FFC0CB;
+            font-family: Arial, sans-serif;
+        }
+
+        div {
+            margin: 20px;
+        }
+
+        /* Estilos para la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        /* Estilos para las celdas de encabezado */
+        th, td {
+            padding: 10px;
+            border: 1px solid black;
+        }
+
+        /* Estilos para las celdas de encabezado */
+        th {
+            background-color: rgb(192, 255, 218);
+            color: black;
+        }
+
+        /* Estilos para las celdas de datos */
+        td {
+            color: black;
+        }
+
+        /* Estilos para el botón de creación */
+        .create-button {
+            background-color: rgb(108, 236, 165);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            text-decoration: none;
+            display: block;
+            width: 200px;
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <!-- Título -->
+        <h2>ADMINISTRADOR DE FACTURAS</h2>
+
+        <!-- Formulario de búsqueda -->
+        <form id="searchForm">
+            <!-- Campo de texto de búsqueda -->
+            <input type="text" placeholder="Buscar..." id="searchInput">
+        </form>
+    </header>
+
+    <!-- Cuerpo principal -->
+    <body style="background-color: #fff700f0;">
+        <!-- Div contenedor centralizado -->
+        <div align="center">
+            <!-- Tabla de facturas -->
+            <table border="1" cellpadding="10">
+                <!-- Encabezado de la tabla -->
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NUMERO-FACTURA</th>
+                        <th>FECHA</th>
+                        <th>CLIENTE</th>
+                        <th>DOMICILIO</th>
+                        <th>POBLACION</th>
+                        <th>DNI</th>
+                        <th>ESTADO</th>
+                        <th>DESCRIPCION TRABAJO</th>
+                        <th>PRECIO TRABAJO</th>
+                        <th colspan="3">OPCIONES</th>
+                    </tr>
+                </thead>
+                <!-- Cuerpo de la tabla -->
+                <tbody>
+                    <!-- Iteración sobre las facturas -->
+                    <tr th:each="factura : ${listFactura}">
+                        <!-- Celdas de datos -->
+                        <td th:text="${factura.id}"> ID</td>
+                        <td th:text="${factura.numero_factura}">NUMERO FACTURA</td>
+                        <td th:text="${factura.fecha}"> FECHA</td>
+                        <td th:text="${factura.cliente}"> CLIENTE</td>
+                        <td th:text="${factura.domicilio}"> DOMICILIO</td>
+                        <td th:text="${factura.poblacion}">POBLACION</td>
+                        <td th:text="${factura.dni}">DNI</td>
+                        <td th:text="${factura.estado}">ESTADO</td>
+                        <td th:text="${factura.descripcion_trabajo}">DESCRIPCION TRABAJO</td>
+                        <td th:text="${factura.precio_trabajo}">PRECIO TRABAJO</td>
+                        <!-- Celdas de opciones -->
+                        <td>
+                            <a th:href="@{'/show/' + ${factura.id}}" style="color: rgb(245, 6, 245);">Mostrar factura</a>
+                        </td>
+                        <td>
+                            <a th:href="@{'/edit/' + ${factura.id}}" style="color: rgb(13, 160, 223);">Editar</a>
+                        </td>
+                        <td>
+                            <a th:href="@{'/delete/' + ${factura.id}}"
+                                onclick="return confirm('¿Estás seguro de que quieres eliminar esta factura?')"
+                                style="color: rgb(241, 0, 0);">Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Botón para crear una nueva factura -->
+            <button class="create-button" onclick="window.location.href='new'">Crear una nueva factura</button>
+        </div>
+    </body>
+
+    <!-- Script de JavaScript -->
+    <script>
+        // Obtener elementos del DOM
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const table = document.querySelector('table');
+
+        // Agregar evento al formulario de búsqueda
+        searchForm.addEventListener('submit', function (event) {
+        	 // Evitar que se recargue la página
+            event.preventDefault();
+
+            // Obtener texto de búsqueda en minúsculas
+            const searchText = searchInput.value.toLowerCase(); 
+
+            // Filtrar las filas de la tabla y ocultar las que no coincidan con el texto de búsqueda
+            Array.from(table.querySelectorAll('tbody tr')).forEach(function (row) {
+                const rowData = Array.from(row.querySelectorAll('td')).map(function (cell) {
+                    return cell.textContent.toLowerCase();
+                });
+
+                if (rowData.some(function (data) {
+                    return data.includes(searchText);
+                })) {
+                	// Mostrar la fila si coincide con la búsqueda
+                    row.style.display = ''; 
+                } else {
+                	// Ocultar la fila si no coincide con la búsqueda
+                    row.style.display = 'none'; 
+                }
+            });
+        });
+    </script>
+</body>
+</html>
